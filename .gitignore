@@ -55,3 +55,9 @@ docs/_build/
 
 # PyBuilder
 target/
+
+# vim temp file
+.*.swp
+
+# MAC file temp file
+.DS_Store
