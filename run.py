@@ -5,17 +5,18 @@ import requests
 import re
 import json
 from urllib import unquote
+import os
 
 import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
 keywords = ['天使汇', 'tech2ipo', '羊羊羊']
-keywords = ['天使汇']
-
 keywords = map(lambda x: repr(x).replace(r'\x', '%')[1:-1], keywords)
 
 PAGE_COUNT = 2
+
+HEADER = '关键字,页码,排名,标题,链接\n'
 
 PC_URL = 'http://www.baidu.com/s?wd=%s&pn=%s0'
 ZHIDAO_URL = 'http://zhidao.baidu.com/search?word=%s&pn=%s0'
@@ -23,22 +24,28 @@ MOBILE_URL = 'http://m.baidu.com/s?word=%s&&pn=%s0'
 
 def run():
     
-    # print '开始爬取PC端'
-    # with open('PC.csv', 'w+') as f:
-    #     for k in keywords:
-    #         print '爬取关键字：%s' % k
-    #         f.write(run_pc(k))
-    #         print '爬取内容写入文件完成\n\n'
+    if not os.path.exists("html"):
+        os.mkdir('html')
 
-    # print '开始爬取垂直端'
-    # with open('zhidao.csv', 'w+') as f:
-    #     for k in keywords:
-    #         print '爬取关键字：%s' % k
-    #         f.write(run_zhidao(k))
-    #         print '爬取内容写入文件完成\n\n'
+    print '开始爬取PC端'
+    with open('PC.csv', 'w+') as f:
+        f.write(HEADER)
+        for k in keywords:
+            print '爬取关键字：%s' % unquote(k)
+            f.write(run_pc(k))
+            print '爬取内容写入文件完成\n\n'
+
+    print '开始爬取垂直端'
+    with open('zhidao.csv', 'w+') as f:
+        f.write(HEADER)
+        for k in keywords:
+            print '爬取关键字：%s' % unquote(k)
+            f.write(run_zhidao(k))
+            print '爬取内容写入文件完成\n\n'
 
     print '开始爬取手机端'
     with open('mobile.csv', 'w+') as f:
+        f.write(HEADER)
         for k in keywords:
             print '爬取关键字：%s' % unquote(k)
             f.write(run_mobile(k))
@@ -51,7 +58,7 @@ def run_pc(keyword):
         print '开始获取第%s页内容' % str(page + 1)
         r = requests.get(PC_URL % (keyword, page))
         text = r.text
-        save_to_file = 'pc_%s_page_%s.html' % (unquote(keyword), page + 1)
+        save_to_file = 'html/pc_%s_page_%s.html' % (unquote(keyword), page + 1)
         print '网页保存至：%s' % save_to_file
         write(text, save_to_file)
 
