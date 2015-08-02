@@ -4,14 +4,18 @@ scrapy_for_seo
 ## 使用方法
 
 1. 安装依赖：
-
+    ```
     sudo pip install requests
+    ```
 
 1. 输入要爬取的关键字: 修改 run.py 中的 keyword，将关键字依次输入进去，格式为：keywords = ['天使汇', 'tech2ipo', '羊羊羊']
 
 1. 修改 PAGE_COUNT = 2，修改为最多爬取多少页
 
-2. 执行 run.py 脚本: python run.py
+2. 执行 run.py 脚本
+    ```
+    python run.py
+    ```
 
 ## 结果查看
 
