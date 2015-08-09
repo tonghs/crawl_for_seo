@@ -22,8 +22,8 @@ PC_URL = 'http://www.baidu.com/s?wd=%s&pn=%s0'
 ZHIDAO_URL = 'http://zhidao.baidu.com/search?word=%s&pn=%s0'
 MOBILE_URL = 'http://m.baidu.com/s?word=%s&&pn=%s0'
 
+
 def run():
-    
     if not os.path.exists("html"):
         os.mkdir('html')
 
