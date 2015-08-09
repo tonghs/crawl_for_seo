@@ -64,13 +64,13 @@ def run_pc(keyword):
 
         for i, o in enumerate(parse_pc(text)):
             rank = i 
-            url = o[2]
+            url = get_real_url(o[2])
             title = deal_title(o[3])
             
             if '%s的最新相关信息' % unquote(keyword) in title:
                 for o_ in get_news(text):
                     rank = i
-                    url = o_[1]
+                    url =  get_real_url(o_[1])
                     title = deal_title(o_[2])
                     tmp = '%s,%s,%s,%s,%s\n' % (unquote(keyword), page + 1, i + 1, title, url)
                     s.append(tmp)
@@ -95,7 +95,7 @@ def run_zhidao(keyword):
 
         for i, o in enumerate(parse_zhidao(text)):
             rank = i 
-            url = o[0]
+            url = get_real_url(o[0])
             title = deal_title(o[1])
             
             tmp = '%s,%s,%s,%s,%s\n' % (unquote(keyword), page + 1, i + 1, title, url)
@@ -179,6 +179,11 @@ def get_mobile_news(txt, keyword):
         m_ = re.findall(p, txt, re.S)
 
     return m_
+
+def get_real_url(url):
+    r = requests.get(url)
+
+    return r.url
 
 
 def print_utf8(s):
