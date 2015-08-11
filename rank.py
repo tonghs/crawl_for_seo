@@ -12,8 +12,12 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 keywords = [
-        ('向日葵传媒', 'sunflowercn.com/'),
-        ('向日葵传媒', 'xrkmedia.com'),
+        ('泰康人寿养老保险', 'www.taikang.com'),
+        ('泰康人寿网上保险', 'www.taikang.com'),
+        ('泰康人寿', 'www.taikang.com'),
+        ('泰康人寿保险公司官网', 'www.taikang.com'),
+        ('泰康团体综合医疗保险', 'www.taikang.com'),
+        ('泰康意外伤害医疗保险金', 'www.taikang.com'),
 ]
 
 keywords = map(lambda x: (repr(x[0]).replace(r'\x', '%')[1:-1], x[1]), keywords)
