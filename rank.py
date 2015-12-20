@@ -29,6 +29,8 @@ HEADER = '关键字,排名\n'
 PC_URL = 'http://www.baidu.com/s?wd=%s&pn=%s0'
 MOBILE_URL = 'http://m.baidu.com/s?word=%s&&pn=%s0'
 
+M_BAIDU = 'http://m.baidu.com'
+
 
 def run():
     if not os.path.exists("html_rank"):
@@ -48,7 +50,7 @@ def run():
         f.write(HEADER)
         for k in keywords:
             print '爬取关键字：%s' % unquote(k[0])
-            f.write(run_pc(k))
+            f.write(run_mobile(k))
             print '爬取内容写入文件完成\n\n'
 
 def run_pc(keyword):
@@ -63,7 +65,6 @@ def run_pc(keyword):
         for i, o in enumerate(parse_pc(text)):
             url = get_real_url(o[2])
             
-            print url
             if keyword[1] in url:
                 tmp = '%s,%s\n' % (unquote(keyword[0]), (page * 10) + i + 1)
                 return tmp
@@ -87,6 +88,8 @@ def run_mobile(keyword):
         for i, o in enumerate(parse_mobile(text)):
             url = o[0].replace('&amp;', '&')
 
+            url = '%s%s' % (M_BAIDU, url) if M_BAIDU not in url else url
+            url = get_real_mobile_url(url)
             if keyword[1] in url:
                 tmp = '%s,%s\n' % (unquote(keyword[0]), (page * 10) + i + 1)
 
@@ -110,6 +113,20 @@ def get_real_url(url):
         r = requests.get(url, timeout=20)
         url = r.url
     except:
+        pass
+
+    return url
+
+def get_real_mobile_url(url):
+    try:
+        r = requests.get(url, timeout=20)
+        content = r.content
+        p = 'url=(.*?)"'
+        m = re.findall(p, content, re.S)
+        if m:
+            url = m[0]
+    except Exception as e:
+        raise e
         pass
 
     return url

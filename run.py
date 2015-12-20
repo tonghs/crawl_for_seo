@@ -120,8 +120,11 @@ def run_mobile(keyword):
             url = o[0].replace('&amp;', '&')
             if not url.startswith('http://m.baidu.com'):
                 url = 'http://m.baidu.com/%s' % url
+            # url = get_real_mobile_url(url)
             p = re.compile('<.*?>')
+
             title = re.sub(p, '==', deal_title(o[1]))
+            title = title.replace('\t', '').replace(' ', '')
             title = filter(None, title.split('=='))[0]
             
             if title == '下一页':
@@ -194,6 +197,20 @@ def get_real_url(url):
     print url
     return url
 
+def get_real_mobile_url(url):
+    try:
+        r = requests.get(url, timeout=20)
+        content = r.content
+        p = 'url=(.*?)"'
+        m = re.findall(p, content, re.S)
+        if m:
+            url = m[0]
+    except Exception as e:
+        pass
+
+    return url
+
+
 
 def print_utf8(s):
     print '>>>', json.dumps(s, encoding="UTF-8",  ensure_ascii=False)
@@ -217,6 +234,7 @@ def deal_title(title):
         filter_list = ['<em>', '</em>', ',']
         for s in filter_list:
             title = title.replace(s, '')
+
 
     return title
     
